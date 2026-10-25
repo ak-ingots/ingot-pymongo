@@ -6,14 +6,16 @@ repeat what README or the ADRs say: link to them.
 ## What this is
 
 `ingot-pymongo`: an addon of [Ingots](https://github.com/ak-ingots/ingots) for
-PyMongo. So far the skeleton: `Project` (`project.py`) takes the addon's
-`Settings` (`settings/`) with its `Configs` (`settings/configs.py`, named
-`MONGODB_*`) and its `Logging` (`logging/`, the logger `ingot_pymongo`); a
-unit lives in the `__init__.py` of its package, as in `ingots.defaults`. Next,
-the clients of MongoDB servers, as components. `python -m ingot_pymongo` runs
-the addon on its own (prefix `INGOT`). A library (ADR 0003), Python >= 3.14,
-part of the [ak-ingots](https://github.com/ak-ingots) ecosystem; the meta
-repository `ingots-libs` holds the ecosystem-wide decisions in `docs/adr/`.
+PyMongo. So far the skeleton: `MongoDbProject` (`project.py`) takes the
+addon's `MongoDbSettings` (`settings/`) with its `MongoDbConfigs`
+(`settings/configs.py`, named `MONGODB_*`) and its `MongoDbLogging`
+(`logging/`, the logger `ingot_pymongo`); a unit lives in the `__init__.py` of
+its package, as in `ingots.defaults`, and a class takes the prefix `MongoDb`,
+so that an application imports it under its own name. Next, the clients of
+MongoDB servers, as components. `python -m ingot_pymongo` runs the addon on
+its own (prefix `INGOT`). A library (ADR 0003), Python >= 3.14, part of the
+[ak-ingots](https://github.com/ak-ingots) ecosystem; the meta repository
+`ingots-libs` holds the ecosystem-wide decisions in `docs/adr/`.
 
 ## Commands
 
@@ -65,7 +67,7 @@ One test: `uv run python -m unittest tests.test_canary.CanaryTestCase`.
   it changes only at release time.
 - Versions start at 0.10.0: the name holds older releases, up to 0.9.0 on
   TestPyPI, and a version is published only once.
-- `ingots` is pinned to a minor version (`>=0.30.1,<0.31`): before 1.0 a minor
+- `ingots` is pinned to a minor version (`>=0.31.0,<0.32`): before 1.0 a minor
   version of the framework may break its addons. Moving on to the next one
   is a change of its own, with a news fragment.
 - Flat layout: the package is `ingot_pymongo/` at the root. The wheel must be

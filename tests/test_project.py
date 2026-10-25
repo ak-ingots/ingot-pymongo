@@ -7,10 +7,10 @@ from unittest import mock
 
 import ingot_pymongo
 from ingot_pymongo.__main__ import main
-from ingot_pymongo.logging import Logging
-from ingot_pymongo.settings import Settings
-from ingot_pymongo.settings.configs import Configs
-from ingots.defaults import Project as DefaultsProject
+from ingot_pymongo.logging import MongoDbLogging
+from ingot_pymongo.settings import MongoDbSettings
+from ingot_pymongo.settings.configs import MongoDbConfigs
+from ingots.defaults import Project
 from ingots.puer.cli import CommandRunner
 
 
@@ -25,15 +25,16 @@ class ProjectTestCase(unittest.TestCase):
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             code = CommandRunner(
-                ingot_pymongo.Project, ["--config", "IS_PRINT_CONFIGS=off", *argv]
+                ingot_pymongo.MongoDbProject,
+                ["--config", "IS_PRINT_CONFIGS=off", *argv],
             ).run()
         return code, out.getvalue()
 
     def test_the_project_extends_the_defaults(self) -> None:
-        self.assertTrue(issubclass(ingot_pymongo.Project, DefaultsProject))
-        self.assertIs(ingot_pymongo.Project.settings.cls, Settings)
-        self.assertIs(ingot_pymongo.Project.logging.cls, Logging)
-        self.assertIs(Settings.configs.cls, Configs)
+        self.assertTrue(issubclass(ingot_pymongo.MongoDbProject, Project))
+        self.assertIs(ingot_pymongo.MongoDbProject.settings.cls, MongoDbSettings)
+        self.assertIs(ingot_pymongo.MongoDbProject.logging.cls, MongoDbLogging)
+        self.assertIs(MongoDbSettings.configs.cls, MongoDbConfigs)
 
     def test_the_configs_of_the_addon_are_read(self) -> None:
         os.environ["INGOT_MONGODB_LOGGING_LEVEL"] = "debug"
