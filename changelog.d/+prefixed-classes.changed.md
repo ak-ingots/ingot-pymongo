@@ -1,0 +1,1 @@
+The classes of the addon take the prefix `MongoDb`: `MongoDbProject` from `ingot_pymongo`, `MongoDbSettings` from `ingot_pymongo.settings`, `MongoDbConfigs` from `ingot_pymongo.settings.configs` and `MongoDbLogging` from `ingot_pymongo.logging`, instead of `Project`, `Settings`, `Configs` and `Logging`.

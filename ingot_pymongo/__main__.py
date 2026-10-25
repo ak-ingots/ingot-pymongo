@@ -5,12 +5,12 @@ import sys
 from ingots.defaults.logging import configure_startup_logging
 from ingots.puer.cli import CommandRunner
 
-from .project import Project
+from .project import MongoDbProject
 
 
 def main() -> None:
     configure_startup_logging()
-    sys.exit(CommandRunner(Project).run())
+    sys.exit(CommandRunner(MongoDbProject).run())
 
 
 if __name__ == "__main__":
