@@ -23,7 +23,7 @@ AGAINST ?= origin/main
 
 # The `ci` workflow runs exactly these targets, one per job.
 .PHONY: check
-check: lint test coverage wheel-test cl-check  ## Every check: lint, test, coverage, wheel-test, cl-check
+check: lint test coverage wheel-test integration cl-check  ## Every check: lint, test, coverage, wheel-test, integration, cl-check
 
 .PHONY: lint
 lint:  ## black --check, flake8, mypy --strict
@@ -40,12 +40,11 @@ coverage:  ## unittest on the working tree under coverage; fails below 99%
 	uv run coverage run -m unittest discover -s tests -t .
 	uv run coverage report
 
-# Not a part of `check`: it needs Docker. The `ci` workflow runs it as a job
-# of its own.
+# It needs Docker; a contributor without it runs the other targets of `check`.
 .PHONY: integration
 integration:  ## tests.test_server against the MongoDB of docker-compose.yml [INGOT_PYMONGO_TEST_PORT=27117]
-	docker compose up --detach --wait --quiet-pull
 	trap 'docker compose down --volumes' EXIT; \
+		docker compose up --detach --wait --quiet-pull; \
 		INGOT_PYMONGO_TEST_PORT=$${INGOT_PYMONGO_TEST_PORT:-27117} \
 		uv run python -m unittest -v tests.test_server
 
