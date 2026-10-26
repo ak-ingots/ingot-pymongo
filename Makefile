@@ -70,7 +70,7 @@ index-test:  ## unittest on the wheel of VERSION as INDEX gives it, against Mong
 	@tmp=$$(mktemp -d); \
 		trap 'rm -rf "$$tmp"; docker compose down --volumes --timeout 1' EXIT; \
 		for attempt in $$(seq 30); do \
-			uvx --quiet pip download --quiet --no-deps --only-binary :all: \
+			uvx --quiet --python $(firstword $(PYTHONS)) pip download --quiet --no-deps --only-binary :all: \
 				--index-url $(INDEX) --dest "$$tmp" "ingot-pymongo==$(VERSION)" \
 				&& break; \
 			[ $$attempt -lt 30 ] || exit 1; \
