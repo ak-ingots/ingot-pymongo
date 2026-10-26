@@ -2,7 +2,7 @@
 The README for consumers works as written: its files of an application
 (the Python blocks starting with ``# app/<path>``) make one, its commands
 (``uv run python -m app ...``) run it, and its table of configs lists the
-configs of the addon with their defaults.
+configs of the addon with their defaults (a secret's is not shown).
 """
 
 import os
@@ -18,7 +18,7 @@ import unittest
 README = pathlib.Path(__file__).parent.parent / "README.md"
 FILE = re.compile(r"^```python\n# (app/\S+)\n(.*?)^```$", re.M | re.S)
 COMMAND = re.compile(r"^uv run python -m app ([^#\n]*?) *(?:#.*)?$", re.M)
-CONFIG_ROW = re.compile(r"^\| `(MONGODB_\w+)` \| `([^`]*)` \|", re.M)
+CONFIG_ROW = re.compile(r"^\| `(MONGODB_\w+)` \| (?:`([^`]*)`)? *\|", re.M)
 CONFIG_LINE = re.compile(r"^(MONGODB_\w+) = (.*)$", re.M)
 
 
@@ -59,4 +59,9 @@ class ReadmeTestCase(unittest.TestCase):
     def test_the_table_lists_the_configs_of_the_addon(self) -> None:
         table = dict(CONFIG_ROW.findall(self.readme))
         listed = dict(CONFIG_LINE.findall(self.run_app("settings", "list")))
-        self.assertEqual(table, listed)
+        # a secret is listed as ***, whatever its default
+        secrets = {name for name, value in listed.items() if value == "***"}
+        self.assertEqual(table.keys(), listed.keys())
+        for name in listed.keys() - secrets:
+            with self.subTest(name):
+                self.assertEqual(table[name], listed[name])

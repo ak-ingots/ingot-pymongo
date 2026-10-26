@@ -9,9 +9,8 @@ Integration of PyMongo, the official driver of MongoDB, into Ingots
 applications, on its asynchronous API. An addon of
 [Ingots](https://github.com/ak-ingots/ingots).
 
-**Status:** pre-alpha, on ingots 0.31. The skeleton of the addon: its
-project, configs, settings and logging. Next, the clients of MongoDB
-servers, as components.
+**Status:** pre-alpha, on ingots 0.31: the clients of MongoDB servers, as
+components.
 
 ## For Consumers
 
@@ -78,16 +77,45 @@ sys.exit(CommandRunner(AppProject).run())
 
 ```sh
 uv run python -m app settings list    # the configs, MONGODB_* among them
+uv run python -m app components list  # the clients, mongodb.clients.default among them
 ```
+
+### Use the clients
+
+`project.mongodb.clients.default` is a component holding PyMongo's
+asynchronous client on `MONGODB_DEFAULT_*`. Awaited, it creates the client
+and pings the server, so that a server out of reach fails the start and not
+the first query; the project closes it at the shutdown. It gives PyMongo as
+it is: `client`, the `AsyncMongoClient`, and `get_database(name)`.
+
+```python
+mongodb = await self.project.mongodb.clients.default
+await mongodb.get_database("shop").orders.insert_one({"item": "ingot"})
+info = await mongodb.get_database("admin").command("buildInfo")
+```
+
+Another server to reach is another client next to the default one: a
+subclass of `BaseMongoDbClient` implementing its hooks on configs of its own,
+`MONGODB_<NAME>_*`, in a slot of a subclass of `MongoDbClients`, set in a
+subclass of `MongoDbUnit` as `clients`; the project takes it as `mongodb`.
+The options of PyMongo the configs do not cover, such as `authSource` or
+`tls`, come from the hook `_get_options()`. The extras of PyMongo are the
+extras of the addon too: `uv add "ingot-pymongo[aws,snappy]"`.
 
 ### Configs
 
 Set as environment variables with the prefix of the project
-(`APP_MONGODB_LOGGING_LEVEL`), in a `--configs-file` or with `--config`.
+(`APP_MONGODB_DEFAULT_HOST`), in a `--configs-file` or with `--config`.
 
 | Name | Default | Meaning |
 |---|---|---|
 | `MONGODB_LOGGING_LEVEL` | `INFO` | the level of the logger of the addon, `ingot_pymongo` |
+| `MONGODB_DEFAULT_HOST` | `localhost` | the host of the server |
+| `MONGODB_DEFAULT_PORT` | `27017` | the port of the server |
+| `MONGODB_DEFAULT_USER` | | the user to authenticate as; empty for none |
+| `MONGODB_DEFAULT_PASSWORD` | | the password of the user, a secret |
+| `MONGODB_DEFAULT_SERVER_SELECTION_TIMEOUT` | `30.0` | the seconds a query waits for the server before it fails |
+| `MONGODB_DEFAULT_IS_PING_ON_START` | `True` | whether to ping the server on start |
 
 ## Development
 

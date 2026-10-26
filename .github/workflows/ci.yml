@@ -2,7 +2,8 @@ name: ci
 
 # `make check`, split across jobs so the legs run in parallel. Every check is
 # a `make` target invoked exactly as it is locally: there is no check that CI
-# enforces and `make check` does not, and none the other way round.
+# enforces and `make check` does not, and none the other way round, but
+# `make integration`, which needs Docker and runs as a job of its own.
 
 on:
   pull_request:
@@ -43,3 +44,12 @@ jobs:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v10.3.2  # no floating major tags since v8
       - run: make wheel-test PYTHONS=${{ matrix.python }}
+
+  # The client against a real MongoDB, started by docker compose: not a part
+  # of `make check`, which needs no Docker.
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.2  # no floating major tags since v8
+      - run: make integration

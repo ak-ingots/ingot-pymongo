@@ -40,6 +40,15 @@ coverage:  ## unittest on the working tree under coverage; fails below 99%
 	uv run coverage run -m unittest discover -s tests -t .
 	uv run coverage report
 
+# Not a part of `check`: it needs Docker. The `ci` workflow runs it as a job
+# of its own.
+.PHONY: integration
+integration:  ## tests.test_server against the MongoDB of docker-compose.yml [INGOT_PYMONGO_TEST_PORT=27117]
+	docker compose up --detach --wait --quiet-pull
+	trap 'docker compose down --volumes' EXIT; \
+		INGOT_PYMONGO_TEST_PORT=$${INGOT_PYMONGO_TEST_PORT:-27117} \
+		uv run python -m unittest -v tests.test_server
+
 # ADR 0003: the tests run against the built wheel, installed into a fresh
 # virtualenv, from a copy of tests/ outside the repository, so the package can
 # be imported only from the wheel.

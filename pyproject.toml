@@ -20,7 +20,19 @@ classifiers = [
     "Typing :: Typed",
 ]
 # Before 1.0 a minor version of ingots may break its addons.
-dependencies = ["ingots>=0.31.0,<0.32"]
+dependencies = [
+    "ingots>=0.31.0,<0.32",
+    "pymongo>=4.19,<5",
+]
+
+# The extras of PyMongo, passed through: they change no code of the addon.
+[project.optional-dependencies]
+aws = ["pymongo[aws]"]
+encryption = ["pymongo[encryption]"]
+gssapi = ["pymongo[gssapi]"]
+ocsp = ["pymongo[ocsp]"]
+snappy = ["pymongo[snappy]"]
+zstd = ["pymongo[zstd]"]
 
 [project.urls]
 repository = "https://github.com/ak-ingots/ingot-pymongo"

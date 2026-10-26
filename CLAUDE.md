@@ -6,14 +6,20 @@ repeat what README or the ADRs say: link to them.
 ## What this is
 
 `ingot-pymongo`: an addon of [Ingots](https://github.com/ak-ingots/ingots) for
-PyMongo. So far the skeleton: `MongoDbProject` (`project.py`) takes the
-addon's `MongoDbSettings` (`settings/`) with its `MongoDbConfigs`
-(`settings/configs.py`, named `MONGODB_*`) and its `MongoDbLogging`
-(`logging/`, the logger `ingot_pymongo`); a unit lives in the `__init__.py` of
-its package, as in `ingots.defaults`, and a class takes the prefix `MongoDb`,
-so that an application imports it under its own name. Next, the clients of
-MongoDB servers, as components. `python -m ingot_pymongo` runs the addon on
-its own (prefix `INGOT`). A library (ADR 0003), Python >= 3.14, part of the
+PyMongo. `MongoDbProject` (`project.py`) takes the addon's `MongoDbSettings`
+(`settings/`) with its `MongoDbConfigs` (`settings/configs.py`, named
+`MONGODB_*`) and its `MongoDbLogging` (`logging/`, the logger
+`ingot_pymongo`); a unit lives in the `__init__.py` of its package, as in
+`ingots.defaults`, and a class takes the prefix `MongoDb`, so that an
+application imports it under its own name. `mongodb/` is the MongoDB unit:
+`clients/` the clients (`BaseMongoDbClient`, a component holding PyMongo's
+`AsyncMongoClient`, with hooks for its configs; `DefaultMongoDbClient` on
+`MONGODB_DEFAULT_*`). A connection wrapper, not an SDK: PyMongo is given as
+it is. `tests/test_readme.py` runs the README for consumers; `make
+integration` runs `tests/test_server.py` against the MongoDB of
+`docker-compose.yml` (not in `make check`; a CI job of its own).
+`python -m ingot_pymongo` runs the addon on its own (prefix `INGOT`). A
+library (ADR 0003), Python >= 3.14, part of the
 [ak-ingots](https://github.com/ak-ingots) ecosystem; the meta repository
 `ingots-libs` holds the ecosystem-wide decisions in `docs/adr/`.
 
@@ -28,6 +34,7 @@ make lint         # black --check, flake8, mypy --strict
 make test         # unittest on the working tree
 make coverage     # the same under coverage; fails below 99%
 make wheel-test   # unittest on the built wheel, PYTHONS="3.14 3.15"
+make integration  # tests.test_server against MongoDB in Docker
 make format       # black
 ```
 

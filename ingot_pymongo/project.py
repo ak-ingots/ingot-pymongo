@@ -6,16 +6,19 @@ from ingots.defaults import Project
 from ingots.puer import Slot
 
 from .logging import MongoDbLogging
+from .mongodb import MongoDbUnit
 from .settings import MongoDbSettings
 
 
 class MongoDbProject(Project):
     """
-    The project of the defaults with the addon's :class:`MongoDbSettings` and
-    :class:`MongoDbLogging`. An application inherits from it and sets its own
-    ``env_configs_prefix``; the addon run on its own (``python -m ingot_pymongo``)
-    keeps the prefix of the defaults, ``INGOT``.
+    The project of the defaults with the addon's :class:`MongoDbSettings`,
+    :class:`MongoDbLogging` and MongoDB, :class:`MongoDbUnit`. An application
+    inherits from it and sets its own ``env_configs_prefix``; the addon run on
+    its own (``python -m ingot_pymongo``) keeps the prefix of the defaults,
+    ``INGOT``.
     """
 
     settings = Slot(MongoDbSettings)
     logging = Slot(MongoDbLogging)
+    mongodb = Slot(MongoDbUnit)
