@@ -17,7 +17,7 @@ application imports it under its own name. `mongodb/` is the MongoDB unit:
 `MONGODB_DEFAULT_*`). A connection wrapper, not an SDK: PyMongo is given as
 it is. `tests/test_readme.py` runs the README for consumers; `make
 integration` runs `tests/test_server.py` against the MongoDB of
-`docker-compose.yml` (not in `make check`; a CI job of its own).
+`docker-compose.yml`, in `make check` too: it needs Docker.
 `python -m ingot_pymongo` runs the addon on its own (prefix `INGOT`). A
 library (ADR 0003), Python >= 3.14, part of the
 [ak-ingots](https://github.com/ak-ingots) ecosystem; the meta repository
@@ -29,7 +29,7 @@ Everything goes through `make` (run `make` alone for the target list); uv
 provides the environments and interpreters.
 
 ```bash
-make check        # what CI runs: lint, test, coverage, wheel-test, cl-check
+make check        # what CI runs: lint, test, coverage, wheel-test, integration, cl-check
 make lint         # black --check, flake8, mypy --strict
 make test         # unittest on the working tree
 make coverage     # the same under coverage; fails below 99%

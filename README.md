@@ -119,12 +119,12 @@ Set as environment variables with the prefix of the project
 
 ## Development
 
-Requires [uv](https://docs.astral.sh/uv/) and `make`; uv fetches the
-interpreters it needs.
+Requires [uv](https://docs.astral.sh/uv/), `make` and Docker, for the
+MongoDB of the tests; uv fetches the interpreters it needs.
 
 ```sh
 make                 # the target list
-make check           # everything CI runs: lint, test, coverage, wheel-test, cl-check
+make check           # everything CI runs: lint, test, coverage, wheel-test, integration, cl-check
 make format          # black
 make all             # build the sdist and the wheel into dist/
 ```
