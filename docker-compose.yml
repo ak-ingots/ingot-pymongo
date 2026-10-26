@@ -1,0 +1,16 @@
+# The MongoDB of the integration tests: `make integration` starts it, runs
+# tests.test_server against it and stops it. The password holds the characters
+# a URI would need quoted.
+services:
+  mongodb:
+    image: mongo:9
+    ports:
+      - "127.0.0.1:${INGOT_PYMONGO_TEST_PORT:-27117}:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ingot
+      MONGO_INITDB_ROOT_PASSWORD: "p@ss:w/rd"
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
