@@ -5,6 +5,10 @@ up to 0.9.0 on TestPyPI are the previous implementation.
 
 <!-- towncrier release notes start -->
 
+## [0.12.0] - 2026-11-01
+### Changed
+- Moved on to ingots 0.32.
+
 ## [0.11.0] - 2026-10-26
 ### Added
 - `MongoDbProject` holds `mongodb`, whose `clients.default` is a component holding PyMongo's `AsyncMongoClient` on `MONGODB_DEFAULT_HOST`, `_PORT`, `_USER`, `_PASSWORD` (a secret), `_SERVER_SELECTION_TIMEOUT` and `_IS_PING_ON_START`: awaited, it pings the server, so that a server out of reach fails the start; it gives `client` and `get_database(name)`. Another client extends `BaseMongoDbClient` with configs of its own. The extras of PyMongo are extras of the addon too.
