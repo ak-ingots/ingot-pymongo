@@ -18,9 +18,6 @@ PYTHONS ?= 3.14 3.15
 # What `cl-check` compares the branch with.
 AGAINST ?= origin/main
 
-# Where `index-test` takes the published package from.
-INDEX ?= https://test.pypi.org/simple/
-
 
 ##@ Checks
 
@@ -58,46 +55,24 @@ integration:  ## tests.test_server against the MongoDB of docker-compose.yml [IN
 wheel-test: all  ## unittest on the built wheel, once per interpreter in PYTHONS
 	@$(MAKE) --no-print-directory installed-test WHEEL="$$(echo dist/*.whl)"
 
-# Not a part of `check`: it needs a published version. The `release` workflow
-# runs it between TestPyPI and PyPI, on the files it has just published. The
-# package alone comes from INDEX, its dependencies from PyPI: anyone may take
-# the name of a dependency on TestPyPI. A wheel of the same name in dist/, the
-# build the workflow tested, must be the same file. The MongoDB of
-# docker-compose.yml runs tests.test_server too.
-.PHONY: index-test
-index-test:  ## unittest on the wheel of VERSION as INDEX gives it, against MongoDB too (VERSION=X.Y.Z) [INDEX=TestPyPI]
-	@test -n "$(VERSION)" || { echo "VERSION=X.Y.Z is required"; exit 1; }
-	@tmp=$$(mktemp -d); \
-		trap 'rm -rf "$$tmp"; docker compose down --volumes --timeout 1' EXIT; \
-		for attempt in $$(seq 30); do \
-			uvx --quiet --python $(firstword $(PYTHONS)) pip download --quiet --no-deps --only-binary :all: \
-				--index-url $(INDEX) --dest "$$tmp" "ingot-pymongo==$(VERSION)" \
-				&& break; \
-			[ $$attempt -lt 30 ] || exit 1; \
-			echo "== waiting for ingot-pymongo $(VERSION) on $(INDEX)"; \
-			sleep 10; \
-		done; \
-		wheel=$$(echo "$$tmp"/*.whl); \
-		if [ -f "dist/$${wheel##*/}" ]; then \
-			cmp "$$wheel" "dist/$${wheel##*/}"; \
-			echo "== $${wheel##*/} is the build of dist/"; \
-		fi; \
-		docker compose up --detach --wait --quiet-pull; \
-		INGOT_PYMONGO_TEST_PORT=$${INGOT_PYMONGO_TEST_PORT:-27117} \
-			$(MAKE) --no-print-directory installed-test WHEEL="$$wheel"
-
-# The tests of tests/ on WHEEL, once per interpreter in PYTHONS.
+# The tests of tests/ on WHEEL, once per interpreter in PYTHONS: for `wheel-test`
+# and for the workflow `index-test` of the meta repository, which the `release`
+# workflow calls between TestPyPI and PyPI, on the files it has just published.
+# The MongoDB of docker-compose.yml runs tests.test_server too.
 .PHONY: installed-test
 installed-test:
 	@test -n "$(WHEEL)" || { echo "WHEEL=path/to.whl is required"; exit 1; }
-	@for py in $(PYTHONS); do \
+	@trap 'docker compose down --volumes --timeout 1' EXIT; \
+	docker compose up --detach --wait --quiet-pull; \
+	export INGOT_PYMONGO_TEST_PORT=$${INGOT_PYMONGO_TEST_PORT:-27117}; \
+	for py in $(PYTHONS); do \
 		echo "== $(notdir $(WHEEL)) on Python $$py"; \
 		tmp=$$(mktemp -d); \
-		trap 'rm -rf "$$tmp"' EXIT; \
 		uv venv --quiet --python $$py "$$tmp/venv"; \
 		uv pip install --quiet --python "$$tmp/venv/bin/python" "$(WHEEL)"; \
 		cp -r tests README.md "$$tmp/"; \
-		(cd "$$tmp" && INGOT_PYMONGO_WHEEL_TEST=1 venv/bin/python -m unittest discover -s tests -t .); \
+		(cd "$$tmp" && INGOT_PYMONGO_WHEEL_TEST=1 venv/bin/python -m unittest discover -s tests -t .) \
+			|| { rm -rf "$$tmp"; exit 1; }; \
 		rm -rf "$$tmp"; \
 	done
 
@@ -144,4 +119,4 @@ help:  ## Show this help
 		/^##@ / {printf "\n%s\n", substr($$0, 5); next} \
 		/^[a-z][a-zA-Z0-9_-]*:.*## / {printf "  %-12s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 	@echo
-	@echo "Variables: PYTHONS, AGAINST, VERSION, INDEX"
+	@echo "Variables: PYTHONS, AGAINST, VERSION"
