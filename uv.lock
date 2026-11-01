@@ -559,7 +559,7 @@ wheels = [
 
 [[package]]
 name = "ingot-pymongo"
-version = "0.12.0"
+version = "0.12.1.dev0"
 source = { editable = "." }
 dependencies = [
     { name = "ingots" },
