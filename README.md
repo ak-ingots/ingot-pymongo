@@ -9,7 +9,7 @@ Integration of PyMongo, the official driver of MongoDB, into Ingots
 applications, on its asynchronous API. An addon of
 [Ingots](https://github.com/ak-ingots/ingots).
 
-**Status:** pre-alpha, on ingots 0.31: the clients of MongoDB servers, as
+**Status:** pre-alpha, on ingots 0.32: the clients of MongoDB servers, as
 components.
 
 ## For Consumers
