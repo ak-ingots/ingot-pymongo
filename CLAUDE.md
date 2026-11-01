@@ -35,7 +35,6 @@ make test         # unittest on the working tree
 make coverage     # the same under coverage; fails below 99%
 make wheel-test   # unittest on the built wheel, PYTHONS="3.14 3.15"
 make integration  # tests.test_server against MongoDB in Docker
-make index-test VERSION=X.Y.Z  # the tests on the wheel published to TestPyPI
 make format       # black
 ```
 
@@ -64,7 +63,7 @@ One test: `uv run python -m unittest tests.test_canary.CanaryTestCase`.
   collates the changelog (`make cl-build VERSION=X.Y.Z`); after the merge,
   the tag `vX.Y.Z` on its commit starts the `release` workflow, which
   publishes to TestPyPI, tests the package installed from it
-  (`make index-test`), then publishes to PyPI once the user approves the
+  (the shared workflow `index-test`), then publishes to PyPI once the user approves the
   `pypi` environment. Run by hand, the workflow rehearses on TestPyPI only.
 
 ## Rules
