@@ -1,16 +1,16 @@
 """The logging unit of the defaults with the logger of the addon."""
 
-__all__ = ("MongoDbLogging",)
+__all__ = ("MongoDbLoggingUnit",)
 
 import typing as t
 
-from ingots.defaults.logging import Logging
+from ingots.defaults.logging import LoggingUnit
 
 if t.TYPE_CHECKING:
     from ..project import MongoDbProject
 
 
-class MongoDbLogging(Logging):
+class MongoDbLoggingUnit(LoggingUnit):
     """
     The logging unit, with the logger of the addon, ``ingot_pymongo``, at
     ``MONGODB_LOGGING_LEVEL``.

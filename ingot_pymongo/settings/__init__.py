@@ -1,14 +1,14 @@
 """The settings unit of the defaults with the configs of the addon."""
 
-__all__ = ("MongoDbSettings",)
+__all__ = ("MongoDbSettingsUnit",)
 
-from ingots.defaults.settings import Settings
+from ingots.defaults.settings import SettingsUnit
 from ingots.puer import Slot
 
 from .configs import MongoDbConfigs
 
 
-class MongoDbSettings(Settings):
+class MongoDbSettingsUnit(SettingsUnit):
     """The settings unit, with the addon's :class:`MongoDbConfigs`."""
 
     configs = Slot(MongoDbConfigs)

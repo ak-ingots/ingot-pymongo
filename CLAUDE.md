@@ -6,9 +6,9 @@ repeat what README or the ADRs say: link to them.
 ## What this is
 
 `ingot-pymongo`: an addon of [Ingots](https://github.com/ak-ingots/ingots) for
-PyMongo. `MongoDbProject` (`project.py`) takes the addon's `MongoDbSettings`
+PyMongo. `MongoDbProject` (`project.py`) takes the addon's `MongoDbSettingsUnit`
 (`settings/`) with its `MongoDbConfigs` (`settings/configs.py`, named
-`MONGODB_*`) and its `MongoDbLogging` (`logging/`, the logger
+`MONGODB_*`) and its `MongoDbLoggingUnit` (`logging/`, the logger
 `ingot_pymongo`); a unit lives in the `__init__.py` of its package, as in
 `ingots.defaults`, and a class takes the prefix `MongoDb`, so that an
 application imports it under its own name. `mongodb/` is the MongoDB unit:
