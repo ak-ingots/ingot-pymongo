@@ -5,6 +5,14 @@ up to 0.9.0 on TestPyPI are the previous implementation.
 
 <!-- towncrier release notes start -->
 
+## [0.13.0] - 2026-11-10
+### Changed
+- Moved on to ingots 0.33. The units of the addon that group others are named
+  by their kind, as ADR 0014 of the ecosystem says: `MongoDbSettings` is
+  `MongoDbSettingsUnit`, `MongoDbLogging` `MongoDbLoggingUnit`,
+  `MongoDbClients` `MongoDbClientsUnit`; the clients keep their names, of
+  their role.
+
 ## [0.12.0] - 2026-11-01
 ### Changed
 - Moved on to ingots 0.32.
