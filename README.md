@@ -30,8 +30,8 @@ each takes the class of the addon among its bases:
 import typing as t
 
 from ingot_pymongo import MongoDbProject
-from ingot_pymongo.logging import MongoDbLogging
-from ingot_pymongo.settings import MongoDbSettings
+from ingot_pymongo.logging import MongoDbLoggingUnit
+from ingot_pymongo.settings import MongoDbSettingsUnit
 from ingot_pymongo.settings.configs import MongoDbConfigs
 from ingots.puer import Slot
 
@@ -40,18 +40,18 @@ class AppConfigs(MongoDbConfigs):
     pass
 
 
-class AppSettings(MongoDbSettings):
+class AppSettingsUnit(MongoDbSettingsUnit):
     configs = Slot(AppConfigs)
 
 
-class AppLogging(MongoDbLogging):
+class AppLoggingUnit(MongoDbLoggingUnit):
     project: "AppProject"
 
 
 class AppProject(MongoDbProject):
     env_configs_prefix = "APP"
-    settings = Slot(AppSettings)
-    logging = Slot(AppLogging)
+    settings = Slot(AppSettingsUnit)
+    logging = Slot(AppLoggingUnit)
 ```
 
 With other addons, their classes join the same bases:
@@ -96,7 +96,7 @@ info = await mongodb.get_database("admin").command("buildInfo")
 
 Another server to reach is another client next to the default one: a
 subclass of `BaseMongoDbClient` implementing its hooks on configs of its own,
-`MONGODB_<NAME>_*`, in a slot of a subclass of `MongoDbClients`, set in a
+`MONGODB_<NAME>_*`, in a slot of a subclass of `MongoDbClientsUnit`, set in a
 subclass of `MongoDbUnit` as `clients`; the project takes it as `mongodb`.
 The options of PyMongo the configs do not cover, such as `authSource` or
 `tls`, come from the hook `_get_options()`. The extras of PyMongo are the

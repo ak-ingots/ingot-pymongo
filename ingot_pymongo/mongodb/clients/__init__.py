@@ -1,6 +1,6 @@
 """The clients: the MongoDB clients of the project, each a component."""
 
-__all__ = ("BaseMongoDbClient", "DefaultMongoDbClient", "MongoDbClients")
+__all__ = ("BaseMongoDbClient", "DefaultMongoDbClient", "MongoDbClientsUnit")
 
 from ingots.puer import Slot, Unit
 
@@ -8,7 +8,7 @@ from .base import BaseMongoDbClient
 from .default import DefaultMongoDbClient
 
 
-class MongoDbClients(Unit):
+class MongoDbClientsUnit(Unit):
     """
     The MongoDB clients of the project: :attr:`default` for a start. An
     application with more servers to reach adds clients in a subclass, each

@@ -5,20 +5,20 @@ __all__ = ("MongoDbProject",)
 from ingots.defaults import Project
 from ingots.puer import Slot
 
-from .logging import MongoDbLogging
+from .logging import MongoDbLoggingUnit
 from .mongodb import MongoDbUnit
-from .settings import MongoDbSettings
+from .settings import MongoDbSettingsUnit
 
 
 class MongoDbProject(Project):
     """
-    The project of the defaults with the addon's :class:`MongoDbSettings`,
-    :class:`MongoDbLogging` and MongoDB, :class:`MongoDbUnit`. An application
+    The project of the defaults with the addon's :class:`MongoDbSettingsUnit`,
+    :class:`MongoDbLoggingUnit` and MongoDB, :class:`MongoDbUnit`. An application
     inherits from it and sets its own ``env_configs_prefix``; the addon run on
     its own (``python -m ingot_pymongo``) keeps the prefix of the defaults,
     ``INGOT``.
     """
 
-    settings = Slot(MongoDbSettings)
-    logging = Slot(MongoDbLogging)
+    settings = Slot(MongoDbSettingsUnit)
+    logging = Slot(MongoDbLoggingUnit)
     mongodb = Slot(MongoDbUnit)

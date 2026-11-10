@@ -7,8 +7,8 @@ from unittest import mock
 
 import ingot_pymongo
 from ingot_pymongo.__main__ import main
-from ingot_pymongo.logging import MongoDbLogging
-from ingot_pymongo.settings import MongoDbSettings
+from ingot_pymongo.logging import MongoDbLoggingUnit
+from ingot_pymongo.settings import MongoDbSettingsUnit
 from ingot_pymongo.settings.configs import MongoDbConfigs
 from ingots.defaults import Project
 from ingots.puer.cli import CommandRunner
@@ -32,9 +32,9 @@ class ProjectTestCase(unittest.TestCase):
 
     def test_the_project_extends_the_defaults(self) -> None:
         self.assertTrue(issubclass(ingot_pymongo.MongoDbProject, Project))
-        self.assertIs(ingot_pymongo.MongoDbProject.settings.cls, MongoDbSettings)
-        self.assertIs(ingot_pymongo.MongoDbProject.logging.cls, MongoDbLogging)
-        self.assertIs(MongoDbSettings.configs.cls, MongoDbConfigs)
+        self.assertIs(ingot_pymongo.MongoDbProject.settings.cls, MongoDbSettingsUnit)
+        self.assertIs(ingot_pymongo.MongoDbProject.logging.cls, MongoDbLoggingUnit)
+        self.assertIs(MongoDbSettingsUnit.configs.cls, MongoDbConfigs)
 
     def test_the_configs_of_the_addon_are_read(self) -> None:
         os.environ["INGOT_MONGODB_LOGGING_LEVEL"] = "debug"
