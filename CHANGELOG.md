@@ -5,6 +5,10 @@ up to 0.9.0 on TestPyPI are the previous implementation.
 
 <!-- towncrier release notes start -->
 
+## [0.15.0] - 2026-11-17
+### Changed
+- Moved on to ingots 0.35.
+
 ## [0.14.0] - 2026-11-14
 ### Changed
 - Moved on to ingots 0.34.
