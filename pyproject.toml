@@ -21,7 +21,7 @@ classifiers = [
 ]
 # Before 1.0 a minor version of ingots may break its addons.
 dependencies = [
-    "ingots>=0.35.0,<0.36",
+    "ingots>=0.36.0,<0.37",
     "pymongo>=4.19,<5",
 ]
 
