@@ -1,27 +1,28 @@
 # CLAUDE.md
 
 Guidance for Claude Code in this repository. Keep it under 200 lines and do not
-repeat what README or the ADRs say: link to them.
+repeat what README, `docs/` or the ADRs say: link to them.
 
 ## What this is
 
-`ingot-pymongo`: an addon of [Ingots](https://github.com/ak-ingots/ingots) for
-PyMongo. `MongoDbProject` (`project.py`) takes the addon's `MongoDbSettingsUnit`
-(`settings/`) with its `MongoDbConfigs` (`settings/configs.py`, named
-`MONGODB_*`) and its `MongoDbLoggingUnit` (`logging/`, the logger
-`ingot_pymongo`); a unit lives in the `__init__.py` of its package, as in
-`ingots.defaults`, and a class takes the prefix `MongoDb`, so that an
-application imports it under its own name. `mongodb/` is the MongoDB unit:
-`clients/` the clients (`BaseMongoDbClient`, a component holding PyMongo's
-`AsyncMongoClient`, with hooks for its configs; `DefaultMongoDbClient` on
-`MONGODB_DEFAULT_*`). A connection wrapper, not an SDK: PyMongo is given as
-it is. `tests/test_readme.py` runs the README for consumers; `make
-integration` runs `tests/test_server.py` against the MongoDB of
-`docker-compose.yml`, in `make check` too: it needs Docker.
-`python -m ingot_pymongo` runs the addon on its own (prefix `INGOT`). A
-library (ADR 0003), Python >= 3.14, part of the
+`ingot-pymongo`: an addon of [Ingots](https://github.com/ak-ingots/ingots)
+for PyMongo. A connection wrapper, not an SDK: PyMongo is given as it is.
+A library (ADR 0003), Python >= 3.14, part of the
 [ak-ingots](https://github.com/ak-ingots) ecosystem; the meta repository
 `ingots-libs` holds the ecosystem-wide decisions in `docs/adr/`.
+
+## Layout
+
+- `project.py`: `MongoDbProject`, with `MongoDbSettingsUnit` (`settings/`,
+  the configs `MONGODB_*` in `settings/configs.py`) and `MongoDbLoggingUnit`
+  (`logging/`, the logger `ingot_pymongo`).
+- `mongodb/`: the MongoDB unit; `clients/` the clients, `BaseMongoDbClient`,
+  a component holding PyMongo's `AsyncMongoClient`, with hooks for its
+  configs; `DefaultMongoDbClient` on `MONGODB_DEFAULT_*`.
+- `tests/test_readme.py` runs the README for consumers; `make integration`
+  runs `tests/test_server.py` against the MongoDB of `docker-compose.yml`,
+  in `make check` too: it needs Docker. `python -m ingot_pymongo` runs the
+  addon on its own (prefix `INGOT`).
 
 ## Commands
 
@@ -62,8 +63,8 @@ One test: `uv run python -m unittest tests.test_canary.CanaryTestCase`.
 - A release: a pull request sets the version (`uv version X.Y.Z`) and
   collates the changelog (`make cl-build VERSION=X.Y.Z`); after the merge,
   the tag `vX.Y.Z` on its commit starts the `release` workflow, which
-  publishes to TestPyPI, tests the package installed from it
-  (the shared workflow `index-test`), then publishes to PyPI once the user approves the
+  publishes to TestPyPI, tests the package installed from it (the shared
+  workflow `index-test`), then publishes to PyPI once the user approves the
   `pypi` environment. Run by hand, the workflow rehearses on TestPyPI only.
 
 ## Rules
@@ -88,10 +89,20 @@ One test: `uv run python -m unittest tests.test_canary.CanaryTestCase`.
   `.github/workflows/ci.yml`. Change them together.
 - CI runs exactly the `make` targets; a new check goes into `make check` and
   `ci.yml` together.
+- A comment tells what the code cannot: why it is so, a constraint from
+  outside (a bug of a library, a standard, a measure), a trap for the next
+  change. None repeats the code, a name, a docstring or what a key of a
+  config says, nor tells the history of a change: that is the commit's.
 - Code layout and naming follow ADR 0007; the PUER rules of `ingots` apply to
   an addon too: hooks start with an underscore and are overridden, not
   called; a protected member is touched only by its class, its subclasses
   and its own package.
+
+Of this package:
+
+- A unit lives in the `__init__.py` of its package, as in `ingots.defaults`,
+  and a class takes the prefix `MongoDb`, so that an application imports it
+  under its own name.
 
 ## Design
 
@@ -99,3 +110,4 @@ An addon extends the framework through slots and subclassing (ADR 0004) and
 ships contract tests that its consumers run (ADR 0005); design principles in
 ADR 0006. The settings it extends are documented in `ingots`:
 `docs/defaults/settings.md` and `docs/defaults/addon.md`.
+The design of the addon is `docs/design/pymongo/` of the meta repository.
