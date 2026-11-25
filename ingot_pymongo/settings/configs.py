@@ -24,7 +24,6 @@ class MongoDbConfigs(Configs):
 
     MONGODB_LOGGING_LEVEL = LogLevelConfig(logging.INFO)
 
-    # the default client
     MONGODB_DEFAULT_HOST = StrConfig("localhost")
     MONGODB_DEFAULT_PORT = IntConfig(27017)
     MONGODB_DEFAULT_USER = StrConfig("")  # empty: no authentication
