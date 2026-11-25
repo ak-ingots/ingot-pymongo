@@ -10,6 +10,7 @@ authors = [{name = "Aliaksandr Karotki", email = "abkarotki@gmail.com"}]
 keywords = ["ingots", "mongodb", "pymongo"]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
+    "Framework :: AsyncIO",
     "Intended Audience :: Developers",
     "Operating System :: MacOS",
     "Operating System :: POSIX :: Linux",
@@ -17,6 +18,7 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: 3.15",
+    "Topic :: Database",
     "Typing :: Typed",
 ]
 dependencies = [
@@ -35,7 +37,9 @@ zstd = ["pymongo[zstd]"]
 
 [project.urls]
 repository = "https://github.com/ak-ingots/ingot-pymongo"
+issues = "https://github.com/ak-ingots/ingot-pymongo/issues"
 changelog = "https://github.com/ak-ingots/ingot-pymongo/blob/main/CHANGELOG.md"
+ecosystem = "https://github.com/ak-ingots/ingots-libs"
 
 [build-system]
 requires = ["uv_build>=0.13.5,<0.14"]
