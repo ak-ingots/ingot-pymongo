@@ -1,5 +1,7 @@
 # ingot-pymongo
 
+[![PyPI](https://img.shields.io/pypi/v/ingot-pymongo.svg)](https://pypi.org/project/ingot-pymongo/)
+[![Python](https://img.shields.io/pypi/pyversions/ingot-pymongo.svg)](https://pypi.org/project/ingot-pymongo/)
 [![ci](https://github.com/ak-ingots/ingot-pymongo/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ak-ingots/ingot-pymongo/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/ak-ingots/ingot-pymongo/blob/main/LICENSE)
 
