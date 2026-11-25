@@ -7,7 +7,7 @@ requires-python = ">=3.14"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
 authors = [{name = "Aliaksandr Karotki", email = "abkarotki@gmail.com"}]
-keywords = ["ingots", "mongodb", "pymongo"]
+keywords = ["ingots", "mongodb", "pymongo", "mongo", "database", "nosql", "asyncio"]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Framework :: AsyncIO",
