@@ -8,7 +8,7 @@ from unittest import mock
 
 from ingot_pymongo import MongoDbProject
 from ingot_pymongo.mongodb.clients import DefaultMongoDbClient, base
-from ingots.puer.cli import CommandRunner
+from ingots.defaults.cli import CommandRunner
 from pymongo import AsyncMongoClient
 from pymongo.asynchronous.database import AsyncDatabase
 from pymongo.errors import ServerSelectionTimeoutError
