@@ -69,7 +69,7 @@ The application runs through its own `__main__.py`:
 import sys
 
 from ingots.defaults.logging import configure_startup_logging
-from ingots.puer.cli import CommandRunner
+from ingots.defaults.cli import CommandRunner
 
 from .project import AppProject
 

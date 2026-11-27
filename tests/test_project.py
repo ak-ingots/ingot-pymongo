@@ -11,7 +11,7 @@ from ingot_pymongo.logging import MongoDbLoggingUnit
 from ingot_pymongo.settings import MongoDbSettingsUnit
 from ingot_pymongo.settings.configs import MongoDbConfigs
 from ingots.defaults import Project
-from ingots.puer.cli import CommandRunner
+from ingots.defaults.cli import CommandRunner
 
 
 class ProjectTestCase(unittest.TestCase):
